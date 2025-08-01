@@ -9,22 +9,32 @@
     * {
       margin: 0; padding: 0; box-sizing: border-box;
     }
-    body {
+    html, body {
       font-family: 'Share Tech Mono', monospace;
       background: black;
-      overflow: hidden;
       color: #00ffcc;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 100px;
+      height: 100%;
+      overflow: hidden;
     }
+
+    body.locked {
+      pointer-events: none;
+      user-select: none;
+    }
+
     canvas {
       position: fixed;
       top: 0;
       left: 0;
       z-index: -1;
     }
+
+    .wrapper {
+      height: 100vh;
+      overflow-y: auto;
+      padding: 80px 20px 40px;
+    }
+
     .glitch {
       font-size: 2.8em;
       text-align: center;
@@ -32,6 +42,7 @@
       animation: glitch 1s infinite;
       position: relative;
     }
+
     @keyframes glitch {
       0% { text-shadow: 2px 0 red, -2px 0 blue; }
       20% { text-shadow: -2px 0 red, 2px 0 blue; }
@@ -47,8 +58,9 @@
       border: 1px solid #00ffcc33;
       border-radius: 14px;
       padding: 30px 20px;
-      width: 90%;
+      width: 100%;
       max-width: 400px;
+      margin: 0 auto;
       box-shadow: 0 0 25px #00ffcc33;
     }
 
@@ -128,22 +140,120 @@
     }
   </style>
 </head>
-<body>
+<body oncontextmenu="return false" onkeydown="return disableKeys(event)">
 
 <canvas id="matrixCanvas"></canvas>
 
-<div class="glitch">XATANICAL BELLA PAYMENT</div>
-<img src="https://files.catbox.moe/0px8yr.png" class="thumbnail" />
+<div class="wrapper">
+  <div class="glitch">XATANICAL BELLA PAYMENT</div>
+  <img src="https://files.catbox.moe/0px8yr.png" class="thumbnail" />
 
-<div class="container">
-  <button class="btn" onclick="window.open('https://files.catbox.moe/iddhhf.jpeg')">💳 QRIS</button>
-  <button class="btn" onclick="window.open('https://link.dana.id/088272044089')">📱 Dana</button>
-  <button class="btn" onclick="window.open('https://gopay.link/088272044089')">📱 Gopay</button>
+  <div class="container">
+    <button class="btn" onclick="window.open('https://files.catbox.moe/iddhhf.jpeg')">💳 QRIS</button>
+    <button class="btn" onclick="window.open('https://link.dana.id/088272044089')">📱 Dana</button>
+    <button class="btn" onclick="window.open('https://gopay.link/088272044089')">📱 Gopay</button>
 
-  <div class="note">Atas Nama: <strong>M A W</strong></div>
+    <div class="note">Atas Nama: <strong>M A W</strong></div>
 
-  <div class="product-card" onclick="toggleDetail(this)">
-    <div class="product-title">Xatanical Store</div>
+    <div class="product-card" onclick="toggleDetail(this)">
+      <div class="product-title">Xatanical Store</div>
+      <div class="price">Mulai Rp100.000</div>
+      <div class="product-detail">
+        Toko layanan script & tools.<br>
+        <img src="https://files.catbox.moe/iddhhf.jpeg" />
+      </div>
+    </div>
+
+    <div class="product-card" onclick="toggleDetail(this)">
+      <div class="product-title">Telegram Bot Tredict Invictus</div>
+      <div class="price">Rp100.000</div>
+      <div class="product-detail">
+        Bot Telegram Bug WhatsApp.
+        <img src="https://files.catbox.moe/iddhhf.jpeg" />
+      </div>
+    </div>
+
+    <div class="product-card" onclick="toggleDetail(this)">
+      <div class="product-title">Partner Xatanical</div>
+      <div class="price">Rp150.000</div>
+      <div class="product-detail">
+        Dapat akses NoEnc Script, fitur SVIP, jual rank/tools.
+        <img src="https://files.catbox.moe/iddhhf.jpeg" />
+      </div>
+    </div>
+
+    <div class="product-card" onclick="toggleDetail(this)">
+      <div class="product-title">Owner Xatanical</div>
+      <div class="price">Rp250.000</div>
+      <div class="product-detail">
+        Akses penuh tools, anti bypass & crack tool.
+        <img src="https://files.catbox.moe/iddhhf.jpeg" />
+      </div>
+    </div>
+
+    <div class="product-card" onclick="toggleDetail(this)">
+      <div class="product-title">Bypass Tools Script</div>
+      <div class="price">Rp150.000</div>
+      <div class="product-detail">
+        Tools untuk bypass dan keamanan script.
+        <img src="https://files.catbox.moe/iddhhf.jpeg" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleDetail(card) {
+    const detail = card.querySelector('.product-detail');
+    detail.style.display = detail.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function disableKeys(e) {
+    if (
+      e.key === 'F12' || 
+      (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+      (e.ctrlKey && e.shiftKey && e.key === 'J') || 
+      (e.ctrlKey && e.key === 'U')
+    ) {
+      return false;
+    }
+  }
+
+  // Matrix Rain Effect
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+
+  const letters = "XATANICAL1234567890";
+  const fontSize = 16;
+  const columns = canvas.width / fontSize;
+  const drops = Array(Math.floor(columns)).fill(1);
+
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00ffcc";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+        drops[i] = 0;
+
+      drops[i]++;
+    }
+  }
+
+  setInterval(drawMatrix, 50);
+</script>
+
+</body>
+</html>    <div class="product-title">Xatanical Store</div>
     <div class="price">Mulai Rp100.000</div>
     <div class="product-detail">
       Toko layanan script & tools.<br>
