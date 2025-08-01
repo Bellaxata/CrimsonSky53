@@ -6,20 +6,13 @@
   <title>XATANICAL BELLA PAYMENT</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       font-family: 'Share Tech Mono', monospace;
       background: black;
       color: #00ffcc;
       height: 100%;
       overflow: hidden;
-    }
-
-    body.locked {
-      pointer-events: none;
-      user-select: none;
     }
 
     canvas {
@@ -40,7 +33,6 @@
       text-align: center;
       color: #00ffcc;
       animation: glitch 1s infinite;
-      position: relative;
     }
 
     @keyframes glitch {
@@ -85,12 +77,24 @@
       font-weight: bold;
       transition: all 0.3s ease;
       backdrop-filter: blur(5px);
+      text-align: center;
     }
 
     .btn:hover {
       background: #00ffcc;
       color: black;
       transform: scale(1.03);
+    }
+
+    .qris-img,
+    .nomor-box {
+      display: none;
+      margin-top: 15px;
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 0 12px #00ffccaa;
+      text-align: center;
+      padding: 10px;
     }
 
     .product-card {
@@ -108,6 +112,165 @@
       background: rgba(0, 255, 153, 0.1);
     }
 
+    .product-title {
+      font-size: 1.2em;
+      color: #00ffff;
+    }
+
+    .price {
+      font-size: 0.9em;
+      margin-top: 5px;
+      color: #66ffff;
+    }
+
+    .product-detail {
+      font-size: 0.85em;
+      color: #aaffff;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .note {
+      text-align: center;
+      font-size: 0.9em;
+      margin-top: 10px;
+      color: #999;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false" onkeydown="return disableKeys(event)">
+<canvas id="matrixCanvas"></canvas>
+
+<div class="wrapper">
+  <div class="glitch">XATANICAL BELLA PAYMENT</div>
+  <img src="https://files.catbox.moe/0px8yr.png" class="thumbnail" />
+
+  <div class="container">
+    <!-- Tombol Pembayaran -->
+    <button class="btn" onclick="toggleQRIS()">Tampilkan QRIS</button>
+    <img id="qrisImage" class="qris-img" src="https://files.catbox.moe/iddhhf.jpeg" alt="QRIS Xatanical" />
+
+    <button class="btn" onclick="toggleDana()">Dana</button>
+    <div id="danaBox" class="nomor-box">Nomor Dana: <strong>0882 7204 4089</strong></div>
+
+    <button class="btn" onclick="toggleGopay()">Gopay</button>
+    <div id="gopayBox" class="nomor-box">Nomor Gopay: <strong>0882 7204 4089</strong></div>
+
+    <div class="note">Atas Nama: <strong>M A W</strong></div>
+
+    <!-- Produk -->
+    <div class="product-card" onclick="toggleDetail(this)">
+      <div class="product-title">Xatanical Store</div>
+      <div class="price">Mulai Rp100.000</div>
+      <div class="product-detail">
+        Toko layanan script & tools Order via admin
+      </div>
+    </div>
+
+    <div class="product-card" onclick="toggleDetail(this)">
+      <div class="product-title">Telegram Bot Tredict Invictus</div>
+      <div class="price">Rp100.000</div>
+      <div class="product-detail">
+        Bot Telegram Bug WhatsApp.
+        Name Script : Tredict Invictus.
+      </div>
+    </div>
+
+    <div class="product-card" onclick="toggleDetail(this)">
+      <div class="product-title">Partner Xatanical</div>
+      <div class="price">Rp150.000</div>
+      <div class="product-detail">
+        Benefit : Dapatkan Noenc Script Tredict Invictus 
+         Dapatkan Function Jika Ada yang terbaru
+         Lu Jadi Svip user 
+         bisa menjual : Vvip, Owner, Ceo, Moderator, Partner , Reseller , Jual Script
+      </div>
+    </div>
+
+    <div class="product-card" onclick="toggleDetail(this)">
+      <div class="product-title">Owner Xatanical</div>
+      <div class="price">Rp250.000</div>
+      <div class="product-detail">
+        Benefit : Dapatkan Noenc Script Tredict Invictus 
+         Dapatkan Function Jika Ada yang terbaru
+         Lu Jadi Svip user 
+         bisa menjual : Vvip, Owner, Ceo, Moderator, Partner , Reseller , Jual Script
+         Mendapatkan Tools Anti Bypass
+         Dan Tools Buat Crack pada script orang
+      </div>
+    </div>
+
+    <div class="product-card" onclick="toggleDetail(this)">
+      <div class="product-title">Bypass Tools Script</div>
+      <div class="price">Rp150.000</div>
+      <div class="product-detail">
+        Tools untuk bypass dan keamanan script anda
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleDetail(card) {
+    const detail = card.querySelector('.product-detail');
+    detail.style.display = detail.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function toggleQRIS() {
+    const img = document.getElementById('qrisImage');
+    img.style.display = img.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function toggleDana() {
+    const danaBox = document.getElementById('danaBox');
+    danaBox.style.display = danaBox.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function toggleGopay() {
+    const gopayBox = document.getElementById('gopayBox');
+    gopayBox.style.display = gopayBox.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function disableKeys(e) {
+    if (
+      e.key === 'F12' || 
+      (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+      (e.ctrlKey && e.shiftKey && e.key === 'J') || 
+      (e.ctrlKey && e.key === 'U')
+    ) {
+      return false;
+    }
+  }
+
+  // Matrix Effect
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+  const letters = "XATANICALBELLA";
+  const fontSize = 16;
+  const columns = canvas.width / fontSize;
+  const drops = Array(Math.floor(columns)).fill(1);
+
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#00ffcc";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+        drops[i] = 0;
+      drops[i]++;
+    }
+  }
+  setInterval(drawMatrix, 50);
+</script>
+
+</body>
+</html>
     .product-title {
       font-size: 1.2em;
       color: #00ffff;
