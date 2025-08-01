@@ -4,110 +4,231 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>XATANICAL BELLA PAYMENT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
     body {
-      margin: 0;
-      padding: 30px 15px;
       font-family: 'Share Tech Mono', monospace;
-      background: #000;
-      color: #00ff99;
+      background: black;
+      overflow: hidden;
+      color: #00ffcc;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      background-image: linear-gradient(to bottom, #000000, #001a00);
-      animation: matrixScroll 30s linear infinite;
+      padding-top: 100px;
     }
-
-    @keyframes matrixScroll {
-      from { background-position: 0 0; }
-      to { background-position: 0 1000px; }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
     }
-
-    h1 {
-      color: #00ffcc;
+    .glitch {
+      font-size: 2.8em;
       text-align: center;
-      font-size: 2.5em;
-      margin-bottom: 10px;
+      color: #00ffcc;
+      animation: glitch 1s infinite;
+      position: relative;
+    }
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 red, -2px 0 blue; }
+      20% { text-shadow: -2px 0 red, 2px 0 blue; }
+      40% { text-shadow: 2px 2px red, -2px -2px blue; }
+      60% { text-shadow: -2px -2px red, 2px 2px blue; }
+      80% { text-shadow: 0 0 red, 0 0 blue; }
+      100% { text-shadow: 2px 0 red, -2px 0 blue; }
+    }
+
+    .container {
+      backdrop-filter: blur(5px);
+      background: rgba(0, 255, 153, 0.05);
+      border: 1px solid #00ffcc33;
+      border-radius: 14px;
+      padding: 30px 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 25px #00ffcc33;
     }
 
     .thumbnail {
-      width: 160px;
-      height: 160px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px #00ff99;
-      margin: 20px 0;
+      width: 130px;
+      height: 130px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px #00ffcc;
+      margin: 20px auto;
+      display: block;
     }
 
-    .section {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .btn {
+      display: block;
+      background: transparent;
+      border: 2px solid #00ffcc;
+      color: #00ffcc;
+      padding: 12px;
       width: 100%;
-      max-width: 350px;
-      margin-bottom: 40px;
-    }
-
-    .product-card {
-      background: rgba(0, 30, 0, 0.6);
-      border: 1px solid #00ff99;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 0 15px #004d26;
-      cursor: pointer;
+      margin: 8px 0;
+      border-radius: 8px;
+      font-weight: bold;
       transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
     }
 
-    .product-card:hover {
-      background: rgba(0, 50, 0, 0.7);
+    .btn:hover {
+      background: #00ffcc;
+      color: black;
       transform: scale(1.03);
     }
 
+    .product-card {
+      margin-top: 25px;
+      border: 1px solid #00ffcc44;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(0, 255, 153, 0.05);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .product-card:hover {
+      transform: scale(1.02);
+      background: rgba(0, 255, 153, 0.1);
+    }
+
     .product-title {
-      font-size: 1.1em;
-      font-weight: bold;
-      color: #00ffcc;
+      font-size: 1.2em;
+      color: #00ffff;
     }
 
     .price {
-      font-size: 0.95em;
-      margin: 6px 0;
-      color: #66ffcc;
+      font-size: 0.9em;
+      margin-top: 5px;
+      color: #66ffff;
     }
 
     .product-detail {
+      font-size: 0.85em;
+      color: #aaffff;
       display: none;
       margin-top: 8px;
-      font-size: 0.85em;
-      color: #99ffcc;
-      white-space: pre-line;
     }
 
-    button {
-      background-color: #00ff99;
-      color: black;
-      border: none;
-      padding: 10px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-family: inherit;
-      box-shadow: 0 0 10px #00ff99;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
+    .product-detail img {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 10px;
     }
 
-    button:hover {
-      transform: scale(1.05);
+    .note {
+      text-align: center;
+      font-size: 0.9em;
+      margin-top: 10px;
+      color: #999;
     }
+  </style>
+</head>
+<body>
 
-    hr {
-      width: 80%;
-      border: none;
-      height: 1px;
-      background-color: #004400;
-      margin: 30px 0;
+<canvas id="matrixCanvas"></canvas>
+
+<div class="glitch">XATANICAL BELLA PAYMENT</div>
+<img src="https://files.catbox.moe/0px8yr.png" class="thumbnail" />
+
+<div class="container">
+  <button class="btn" onclick="window.open('https://files.catbox.moe/iddhhf.jpeg')">💳 QRIS</button>
+  <button class="btn" onclick="window.open('https://link.dana.id/088272044089')">📱 Dana</button>
+  <button class="btn" onclick="window.open('https://gopay.link/088272044089')">📱 Gopay</button>
+
+  <div class="note">Atas Nama: <strong>M A W</strong></div>
+
+  <div class="product-card" onclick="toggleDetail(this)">
+    <div class="product-title">Xatanical Store</div>
+    <div class="price">Mulai Rp100.000</div>
+    <div class="product-detail">
+      Toko layanan script & tools.<br>
+      <img src="https://files.catbox.moe/iddhhf.jpeg" />
+    </div>
+  </div>
+
+  <div class="product-card" onclick="toggleDetail(this)">
+    <div class="product-title">Telegram Bot Tredict Invictus</div>
+    <div class="price">Rp100.000</div>
+    <div class="product-detail">
+      Bot Telegram Bug WhatsApp.
+      <img src="https://files.catbox.moe/iddhhf.jpeg" />
+    </div>
+  </div>
+
+  <div class="product-card" onclick="toggleDetail(this)">
+    <div class="product-title">Partner Xatanical</div>
+    <div class="price">Rp150.000</div>
+    <div class="product-detail">
+      Dapat akses lisensi NoEnc, fitur SVIP & jual rank/tools.
+      <img src="https://files.catbox.moe/iddhhf.jpeg" />
+    </div>
+  </div>
+
+  <div class="product-card" onclick="toggleDetail(this)">
+    <div class="product-title">Owner Xatanical</div>
+    <div class="price">Rp250.000</div>
+    <div class="product-detail">
+      Full akses tools + Anti Bypass + Crack Tools.
+      <img src="https://files.catbox.moe/iddhhf.jpeg" />
+    </div>
+  </div>
+
+  <div class="product-card" onclick="toggleDetail(this)">
+    <div class="product-title">Bypass Tools Script</div>
+    <div class="price">Rp150.000</div>
+    <div class="product-detail">
+      Tools untuk bypass dan keamanan script.
+      <img src="https://files.catbox.moe/iddhhf.jpeg" />
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleDetail(card) {
+    const detail = card.querySelector('.product-detail');
+    detail.style.display = detail.style.display === 'block' ? 'none' : 'block';
+  }
+
+  // Matrix Rain Effect
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+
+  const letters = "XATANICAL1234567890";
+  const fontSize = 16;
+  const columns = canvas.width / fontSize;
+  const drops = Array(Math.floor(columns)).fill(1);
+
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00ffcc";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.95)
+        drops[i] = 0;
+
+      drops[i]++;
+    }
+  }
+
+  setInterval(drawMatrix, 50);
+</script>
+
+</body>
+</html>      margin: 30px 0;
     }
 
     .note {
